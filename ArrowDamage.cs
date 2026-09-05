@@ -6,20 +6,24 @@ using System.Threading.Tasks;
 
 namespace MoreDamagesTester
 {
-    internal class SwordDamage
+    internal class ArrowDamage
     {
         /// <summary>
-        /// Константа для додавання до шкоди під час її вирахування (базова шкода).
+        /// Константа для множення шкоди під час її вирахування (базовий множник).
         /// </summary>
-        private const int BASE_DAMAGE = 3;
+        private const decimal BASE_MULTIPLIER = 0.35M;
+        /// <summary>
+        /// Константа для множення шкоди під час її вирахування (магічний множник).
+        /// </summary>
+        private const decimal MAGIC_MULTIPLIER = 2.5M;
         /// <summary>
         /// Константа для додавання до шкоди під час її вирахування (додаткова шкода від вогняного ефекту).
         /// </summary>
-        private const int FLAME_DAMAGE = 2;
+        private const decimal FLAME_DAMAGE = 1.25M;
 
         private int roll;
         /// <summary>
-        /// Видає або задає результат кидку 3D6.
+        /// Видає або задає результат кидку 1D6.
         /// </summary>
         public int Roll
         {
@@ -32,7 +36,7 @@ namespace MoreDamagesTester
         }
         private bool flaming;
         /// <summary>
-        /// Видає або задає вогняний ефект для меча.
+        /// Видає або задає вогняний ефект для стріли.
         /// </summary>
         public bool Flaming
         {
@@ -45,7 +49,7 @@ namespace MoreDamagesTester
         }
         private bool magic;
         /// <summary>
-        /// Видає або задає магічний ефект для меча.
+        /// Видає або задає магічний ефект для стріли.
         /// </summary>
         public bool Magic
         {
@@ -57,27 +61,27 @@ namespace MoreDamagesTester
             }
         }
         /// <summary>
-        /// Видає або задає значення вирахуваної шкоди від меча.
+        /// Видає або задає значення вирахуваної шкоди від стріли.
         /// </summary>
         public int Damage { get; private set; }
 
         /// <summary>
         /// Вираховує значення шкоди по формулі, використовуючи значення Roll, Magic та Flaming
-        /// (Якщо меч магічний, результат кидку множиться на 1.75; якщо меч вогняний, до вирахуваної шкоди додаються пошкодження від вогню).
+        /// (Якщо стріла магічна, результат множиться на 2.5; якщо стріла вогняна, до вирахуваної шкоди додаються пошкодження від вогню).
         /// </summary>
         private void CalculateDamage()
         {
-            decimal magicMultiplier = 1M;
-            if (Magic) magicMultiplier = 1.75M;
-            Damage = (int)(Roll * magicMultiplier) + BASE_DAMAGE;
-            if (Flaming) Damage += FLAME_DAMAGE;
+            decimal baseDamage = Roll * BASE_MULTIPLIER;
+            if (Magic) baseDamage *= MAGIC_MULTIPLIER;
+            if (Flaming) Damage = (int)Math.Ceiling(baseDamage + FLAME_DAMAGE);
+            else Damage = (int)Math.Ceiling(baseDamage);
         }
 
         /// <summary>
-        /// Задає початкове значення кидка 3D6 властивості Roll та вираховує початкову шкоду від меча.
+        /// Задає початкове значення кидка 1D6 властивості Roll та вираховує початкову шкоду від стріли.
         /// </summary>
-        /// <param name="roll">Значення кидка 3D6.</param>
-        public SwordDamage(int roll)
+        /// <param name="roll">Значення кидка 1D6.</param>
+        public ArrowDamage(int roll)
         {
             Roll = roll;
             CalculateDamage();
