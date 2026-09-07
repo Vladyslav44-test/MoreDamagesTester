@@ -50,7 +50,7 @@ namespace MoreDamagesTester
         /// <summary>
         /// Видає або задає значення вирахуваної шкоди від зброї.
         /// </summary>
-        public int Damage { get; private set; }
+        public int Damage { get; protected set; }
 
         /// <summary>
         /// Вираховує значення шкоди по формулі, використовуючи значення Roll, Magic та Flaming.
