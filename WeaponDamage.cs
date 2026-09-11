@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MoreDamagesTester
 {
-    internal class WeaponDamage
+    internal abstract class WeaponDamage
     {
         private int roll;
         /// <summary>
@@ -55,10 +55,7 @@ namespace MoreDamagesTester
         /// <summary>
         /// Вираховує значення шкоди по формулі, використовуючи значення Roll, Magic та Flaming.
         /// </summary>
-        protected virtual void CalculateDamage()
-        {
-            /// Перевизначається в субклассах.
-        }
+        protected abstract void CalculateDamage();
 
         /// <summary>
         /// Задає початкове значення кидка кубиків властивості Roll та вираховує початкову шкоду від зброї.
